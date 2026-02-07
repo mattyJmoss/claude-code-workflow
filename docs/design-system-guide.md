@@ -6,9 +6,22 @@ The design system lives across three optional memory bank files. You don't need 
 
 | File | What It Covers | When to Create |
 |------|---------------|----------------|
-| `design.md` | Visual specs — colors, typography, spacing, motion tokens | When you have any UI |
-| `interaction.md` | Behavioral rules — how things respond to user actions | When you have forms, overlays, navigation |
-| `patterns.md` | Reusable component catalog — shared components with specs | After 2-3 screens, when shared patterns emerge |
+| `design.md` | Visual specs — colors, typography, spacing, motion, haptics, audio tokens | When you have any UI |
+| `interaction.md` | Behavioral rules — how things respond to user actions, design system scope | When you have forms, overlays, navigation |
+| `patterns.md` | Reusable component catalog — system tokens, shared components, compositional patterns | After 2-3 screens, when shared patterns emerge |
+
+### How They Relate
+
+These files work as a system, not standalone documents:
+
+| Decision Type | Owned By | Example |
+|---------------|----------|---------|
+| Color hex codes, font sizes | `design.md` | `accent: #E84A1B` |
+| When/how things behave | `interaction.md` | "Validate on submit, not on blur" |
+| Component structure and API | `patterns.md` | "MenuItem has label + optional sublabel" |
+| Which tokens apply where | `interaction.md` (Design System Scope) | "Skin components use `useTheme()`, system UI uses `SystemColors`" |
+
+When in doubt: visual spec → `design.md`, behavioral rule → `interaction.md`, component API → `patterns.md`.
 
 ## `design.md` — Visual Specs
 
@@ -18,16 +31,19 @@ This is your visual source of truth. Every color, font size, spacing value, and 
 
 **If you have a Figma file or mockup:**
 1. Open the design file
-2. Extract every unique color → put in Colors table
+2. Extract every unique color → put in Colors table (include contrast ratios for accessibility)
 3. Extract the type scale (font, size, weight, line-height) → put in Typography table
 4. Identify the spacing grid (usually 4px or 8px base) → put in Spacing table
 5. Note any animations or transitions → put in Motion table
+6. If applicable, define haptic feedback triggers → put in Haptics table
+7. If applicable, define audio specs → put in Audio table
 
 **If you're designing as you go:**
 1. Pick a color palette (accent + neutrals + semantics) and commit to it
 2. Define 4-5 type levels (heading, subheading, body, caption, mono)
 3. Pick a spacing scale (recommended: 4, 8, 12, 16, 24, 32)
 4. Define 2-3 motion durations (fast, normal, slow)
+5. Add Implementation Notes as you discover platform-specific gotchas
 
 **What the Design Director checks:**
 - Every value in code matches a token in this file
@@ -111,9 +127,14 @@ This is a living inventory of shared components. It prevents duplication and giv
 For each component, capture:
 - **Source path** — where the code lives
 - **Visual specs** — height, radius, colors (reference design.md tokens)
-- **Props** — what it accepts
-- **States** — default, pressed, disabled, loading
+- **Props** — what it accepts, fully typed
+- **States** — default, pressed, disabled, loading, error
 - **Usage rules** — when to use it and when NOT to
+- **Compositional relationship** — does it wrap or contain other patterns?
+
+**System tokens first:** If you have shared token objects (typography scales, color palettes, button/input style presets), document those at the top of `patterns.md` before individual components. These are the foundation everything references.
+
+**Naming convention for state variants:** Use `{token}{State}` suffixes — e.g., `accentPressed`, `dangerShadow`, `surfaceLightShadow`. Document your convention so contributors stay consistent.
 
 ### When the Design Director checks this
 

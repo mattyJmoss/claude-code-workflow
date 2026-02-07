@@ -5,6 +5,18 @@
 > **How to fill it out:** Start with the sections most relevant to your app. You don't need all sections immediately — fill them in as you build features that need behavioral rules. The goal is to have a single source of truth so every screen behaves consistently.
 >
 > **Tip:** If you find yourself making the same interaction decision twice (e.g., "should this validate on blur or on submit?"), that's a sign it should be documented here.
+>
+> **Relationship to other files:** `design.md` defines *what things look like* (tokens, visual specs). This file defines *when and how things behave*. `patterns.md` catalogs the shared components that implement these behaviors. If you're unsure where something belongs: visual spec → `design.md`, behavioral rule → here, component API → `patterns.md`.
+
+## Design System Scope
+<!-- If your app has multiple design sub-systems (e.g., themed components vs. fixed system UI), declare them here.
+This prevents mixing concerns — Claude will know which token set applies to which context. -->
+<!-- Example:
+1. **Skin System** (themed) — Device UI components (PTTButton, ChannelPlate, etc.). Tokens come from `lib/theme/skins/<skin>.ts`. Changes when user switches skins.
+2. **System UI** (fixed) — Overlays, menus, settings. Uses DM Sans + fixed color palette from `systemUI.ts`. Does NOT change with skin switching.
+
+**Rule:** Skin components read from `useTheme()`. System UI reads from `SystemColors`/`SystemTypography`. Never mix them.
+-->
 
 ## Feedback Patterns
 <!-- How does the app communicate state changes to the user? -->
@@ -53,4 +65,16 @@
 - **iOS:** Respect safe areas. Use haptic feedback for meaningful interactions (success, selection change). Support Dynamic Type where feasible.
 - **Android:** Material back gesture. System navigation bar theming.
 - **Deviations:** Custom overlay dismiss (swipe down) instead of system modal — justified by full-screen radio metaphor.
+-->
+
+## Interaction Decisions
+
+<!-- Track behavioral decisions so they don't get relitigated. -->
+
+| Decision | Choice | Rationale | Date |
+|----------|--------|-----------|------|
+<!-- Example:
+| Form validation timing | On submit, not on blur | "Validation while typing feels like the user made a mistake before they're done" | 2026-01-15 |
+| Overlay stacking | Replace, never stack | Radio metaphor — one screen at a time, like physical device | 2026-01-20 |
+| Keyboard avoidance | KeyboardAvoidingView + ScrollView | Standard RN pattern, works cross-platform | 2026-02-07 |
 -->

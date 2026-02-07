@@ -61,6 +61,29 @@
 | `spring` | damping: 15, stiffness: 150 | Spatial movements (slides, bounces) |
 -->
 
+### Haptics
+<!-- Define haptic feedback patterns — which actions trigger which haptic response -->
+<!-- Example:
+| Trigger | Haptic | API | Usage |
+|---------|--------|-----|-------|
+| Dial position snap | Selection | `Haptics.selectionAsync()` | Discrete position changes |
+| Button press | Light impact | `Haptics.impactAsync(Light)` | Taps on interactive elements |
+| Destructive action | Medium impact | `Haptics.impactAsync(Medium)` | Delete confirmation |
+| Error | Notification error | `Haptics.notificationAsync(Error)` | Validation failure |
+-->
+
+### Audio
+<!-- If applicable — define audio design tokens for sound effects, recording, playback -->
+<!-- Example:
+| Token | Value | Usage |
+|-------|-------|-------|
+| Recording codec | AAC 44.1kHz 128kbps | Voice messages |
+| Playback mode | Speaker (not earpiece) | Default audio output |
+| Effects chain | BiquadFilter → Compressor | Applied at playback only |
+
+**Philosophy:** Record clean, apply effects at playback only. Never modify the source recording.
+-->
+
 ## Component Inventory
 <!-- List key components with their visual specs and states -->
 <!-- For each component, define: default, hover/pressed, active, disabled, loading, error, empty states -->
@@ -81,6 +104,15 @@
 <!-- Example:
 - **iOS:** Safe area insets respected on all screens. Touch targets ≥ 44pt.
 - **Deviation:** Custom tab bar instead of UITabBar — justified by the walkie-talkie radio metaphor.
+-->
+
+## Implementation Notes
+<!-- Platform-specific notes for translating design specs into code -->
+<!-- Example:
+- **Inset shadows:** React Native doesn't support `inset box-shadow`. Approximate with layered Views + opacity gradients.
+- **Scanline overlays:** Use a semi-transparent PNG or SVG pattern overlay. Can be expensive on low-end Android — test performance.
+- **Libraries:** `expo-linear-gradient` for gradients, `react-native-shadow-2` for drop shadows, `react-native-reanimated` for spring physics.
+- **Web CSS equivalents:** `backdrop-filter: blur()` → `@react-native-community/blur` on native, CSS on web.
 -->
 
 ## Design Decisions
