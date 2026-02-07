@@ -103,7 +103,7 @@
 <!-- Which platform conventions to follow, and any intentional deviations -->
 <!-- Example:
 - **iOS:** Safe area insets respected on all screens. Touch targets ≥ 44pt.
-- **Deviation:** Custom tab bar instead of UITabBar — justified by the walkie-talkie radio metaphor.
+- **Deviation:** Custom tab bar instead of UITabBar — justified by the app's unique navigation metaphor.
 -->
 
 ## Implementation Notes

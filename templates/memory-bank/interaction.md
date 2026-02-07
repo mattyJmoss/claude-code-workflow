@@ -12,10 +12,10 @@
 <!-- If your app has multiple design sub-systems (e.g., themed components vs. fixed system UI), declare them here.
 This prevents mixing concerns — Claude will know which token set applies to which context. -->
 <!-- Example:
-1. **Skin System** (themed) — Device UI components (PTTButton, ChannelPlate, etc.). Tokens come from `lib/theme/skins/<skin>.ts`. Changes when user switches skins.
-2. **System UI** (fixed) — Overlays, menus, settings. Uses DM Sans + fixed color palette from `systemUI.ts`. Does NOT change with skin switching.
+1. **Theme System** (dynamic) — App-specific components (cards, buttons, headers). Tokens come from theme files. Changes when user switches themes.
+2. **System UI** (fixed) — Overlays, menus, settings. Uses a fixed font + color palette from a shared constants file. Does NOT change with theme switching.
 
-**Rule:** Skin components read from `useTheme()`. System UI reads from `SystemColors`/`SystemTypography`. Never mix them.
+**Rule:** Themed components read from `useTheme()`. System UI reads from shared constants. Never mix them.
 -->
 
 ## Feedback Patterns
@@ -64,7 +64,7 @@ This prevents mixing concerns — Claude will know which token set applies to wh
 <!-- Example:
 - **iOS:** Respect safe areas. Use haptic feedback for meaningful interactions (success, selection change). Support Dynamic Type where feasible.
 - **Android:** Material back gesture. System navigation bar theming.
-- **Deviations:** Custom overlay dismiss (swipe down) instead of system modal — justified by full-screen radio metaphor.
+- **Deviations:** Custom overlay dismiss (swipe down) instead of system modal — justified by the app's unique interaction metaphor.
 -->
 
 ## Interaction Decisions
