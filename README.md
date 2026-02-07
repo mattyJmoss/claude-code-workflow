@@ -46,7 +46,37 @@ I want to install an engineering workflow from a folder. The source is at [PATH]
 4. Confirm everything looks correct and show me what was installed.
 ```
 
-### 3. Start using it
+### 3. Set up `/sync-workflow` (optional)
+
+If you want to be able to publish workflow changes back to a shared repo, paste this into Claude Code:
+
+```
+I want to set up /sync-workflow so I can publish changes to my workflow files. Here's what to do:
+
+1. Read the template config at [PATH]/claude-code-workflow/sync-rules-template.json
+
+2. Scan my ~/.claude/ directory (not the projects/ subdirectory) and identify:
+   - Any personal names, usernames, or collaborator names in CLAUDE.md or command files
+   - Any project-specific ticket prefixes (like PROJ-123 patterns) used as examples
+   - Any workspace or organization names
+   - Any files that contain secrets, API keys, or bearer tokens
+   - Any hook scripts that reference personal services or bots
+
+3. Ask me:
+   - What GitHub repo should changes be published to? (e.g., myuser/claude-code-workflow)
+   - Where is my local clone of that repo? (or should we clone it now?)
+   - Do I use Obsidian? If so, where's my vault path for syncing templates?
+
+4. Generate a ~/.claude/sync-workflow-rules.json config that:
+   - Maps every file from step 2's scan to the correct repo destination
+   - Adds sanitize_rules for every personal/project-specific reference found
+   - Excludes any files with secrets
+   - Sets the Obsidian paths (or null if not using Obsidian)
+
+5. Show me the generated config and explain what each sanitization rule does before saving.
+```
+
+### 4. Start using it
 
 ```bash
 # New project
