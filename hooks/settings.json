@@ -1,0 +1,51 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/preserve-context.sh",
+            "timeout": 30,
+            "statusMessage": "Preserving context before compaction"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat ~/.claude/compaction-context/snapshot.md 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/detect-corrections.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "You are a quality gate. Determine if tests should be run and verify they pass.\n\n1. FIRST: Check the hook input for \"stop_hook_active\": true. If true, this hook already ran once — respond with {\"ok\": true} immediately to prevent an infinite loop.\n\n2. Check if any source code files were modified in this session (look for recently modified files via git status). If no code was modified (this was just conversation, research, or planning), respond with {\"ok\": true} immediately.\n\n3. If code WAS modified, identify the project type and test command:\n   - Package.swift present → run: swift test\n   - package.json present → run: bun test (or npm test if no bun)\n   - pyproject.toml or requirements.txt → run: python -m pytest\n   - If no test infrastructure exists yet, respond with {\"ok\": true}\n\n4. Run the test suite. Examine the output:\n   - All tests pass → respond with {\"ok\": true}\n   - Tests fail → respond with {\"ok\": false, \"reason\": \"Tests failing: [list the specific failures concisely]\"}\n\n5. Be efficient — don't explore the codebase extensively. Just check git status, find the test command, run it, report results.\n\n$ARGUMENTS",
+            "timeout": 120,
+            "statusMessage": "Running quality gate (verifying tests)..."
+          }
+        ]
+      }
+    ]
+  }
+}
