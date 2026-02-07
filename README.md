@@ -9,7 +9,7 @@ An opinionated workflow system that makes Claude Code work like a disciplined en
 - **4 review gates** — Claude reviews its own plans and code using Staff Engineer and Design Director personas before calling anything done
 - **TDD protocol** — Test plans are reviewed for race conditions and edge cases *before* tests are written
 - **Memory bank** — Up to 9 small files per project that let Claude pick up where it left off without re-reading the entire codebase
-- **6 slash commands** — `/new-project`, `/scope`, `/kickoff`, `/quickfix`, `/techdebt`, `/reflect`
+- **7 slash commands** — `/new-project`, `/scope`, `/kickoff`, `/quickfix`, `/techdebt`, `/reflect`, `/sync-workflow`
 - **Automated hooks** — Quality gate (test verification), context preservation (survives autocompact), correction detection (organic self-improvement)
 - **Git workflow** — Automatic branching per ticket, PRs created when done
 
@@ -34,7 +34,7 @@ I want to install an engineering workflow from a folder. The source is at [PATH]
    - CLAUDE.md → ~/.claude/CLAUDE.md
    - prompts/staff-engineer.md → ~/.claude/prompts/staff-engineer.md
    - prompts/design-director.md → ~/.claude/prompts/design-director.md
-   - commands/*.md → ~/.claude/commands/ (all 6 files)
+   - commands/*.md → ~/.claude/commands/ (all 7 files)
    - templates/memory-bank/*.md → ~/.claude/templates/memory-bank/ (all 9 files)
    - hooks/preserve-context.sh → ~/.claude/hooks/preserve-context.sh
    - hooks/detect-corrections.sh → ~/.claude/hooks/detect-corrections.sh
@@ -119,7 +119,8 @@ claude-code-workflow/
 │   ├── scope.md                    # Planning session
 │   ├── new-project.md              # Project bootstrapping
 │   ├── techdebt.md                 # Debt review
-│   └── reflect.md                  # Self-improvement
+│   ├── reflect.md                  # Self-improvement
+│   └── sync-workflow.md            # Publish workflow changes to public repo
 ├── templates/
 │   └── memory-bank/                # Blank templates for new projects
 │       ├── brief.md, product.md, architecture.md, tech.md
@@ -140,6 +141,7 @@ claude-code-workflow/
 - **[How to Use](docs/how-to-use.md)** — Full workflow walkthrough
 - **[Slash Commands](docs/slash-commands.md)** — When to use each command
 - **[Design System Guide](docs/design-system-guide.md)** — How to fill out design.md, interaction.md, and patterns.md
+- **[Setup Guide](docs/setup-guide.md)** — Quick 2-minute install
 
 ## Customizing
 

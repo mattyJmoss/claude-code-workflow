@@ -13,9 +13,9 @@ Commands follow a natural project lifecycle, with two utility commands that bran
    Create         Plan       Build        Clean up
    project        features   tickets      debt
                      │
-                     ├─── /quickfix (branch off anytime for urgent bugs)
-                     │
-                     └─── /reflect  (branch off anytime to review corrections)
+                     ├─── /quickfix      (branch off anytime for urgent bugs)
+                     ├─── /reflect       (branch off anytime to review corrections)
+                     └─── /sync-workflow (branch off anytime to publish workflow changes)
 ```
 
 - **Left to right** is the happy path for a new project.
@@ -157,6 +157,38 @@ Claude might say: "I found 4 corrections about forgetting to update `context.md`
 
 ---
 
+### `/sync-workflow`
+
+**When to use:** You've made changes to your local workflow files (`~/.claude/`) and want to publish them to your public workflow repo.
+
+**What it does:**
+1. Reads `~/.claude/sync-workflow-rules.json` for file mappings and sanitization rules
+2. Copies each mapped source file to the public repo, applying sanitization (stripping personal names, project-specific references, secrets)
+3. Shows you a diff of what changed
+4. On your approval, commits and pushes
+5. Optionally syncs updated templates to your Obsidian vault
+
+**How often:** Whenever you modify prompts, commands, templates, or the global CLAUDE.md.
+
+**Setup required:** Create a `~/.claude/sync-workflow-rules.json` config file that defines:
+- `file_mappings` — which source file maps to which repo destination
+- `sanitize_rules` — patterns to strip or replace (personal names, project refs, workspace slugs)
+- `exclude_files` — files that should never be synced (containing secrets, personal integrations)
+- `manually_maintained` — repo files that aren't auto-synced (README, LICENSE, docs)
+
+**Example:**
+```
+/sync-workflow
+```
+Claude diffs your local files against the public repo, shows what changed, and asks for approval before pushing.
+
+```
+/sync-workflow dry-run
+```
+Shows what would change without committing.
+
+---
+
 ## Decision Guide
 
 | Situation | Command |
@@ -167,6 +199,7 @@ Claude might say: "I found 4 corrections about forgetting to update `context.md`
 | Fixing a bug quickly | `/quickfix` |
 | Cleaning up after a sprint or milestone | `/techdebt` |
 | Claude keeps making the same mistake | `/reflect` |
+| Changed a prompt, command, or template | `/sync-workflow` |
 | Need to work on a specific ticket (not next in queue) | `/kickoff` then redirect |
 | Want to plan without creating tickets yet | `/scope` (you can stop before ticket creation) |
 
@@ -182,6 +215,7 @@ Claude might say: "I found 4 corrections about forgetting to update `context.md`
 | `/quickfix` | Yes | `fix/TICKET-ID-short-description` |
 | `/techdebt` | Yes (if working on an item) | `chore/TICKET-ID-short-description` |
 | `/reflect` | No | Updates CLAUDE.md only — no branch needed |
+| `/sync-workflow` | No | Syncs to external repo — no project branch needed |
 
 ---
 
