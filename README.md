@@ -110,6 +110,7 @@ Instead of re-reading your entire codebase every session, Claude reads up to 9 s
 ```
 claude-code-workflow/
 ├── CLAUDE.md                       # The master workflow file
+├── sync-rules-template.json        # Template for /sync-workflow config
 ├── prompts/
 │   ├── staff-engineer.md           # 3-mode review persona (plan, test plan, code)
 │   └── design-director.md          # Design review persona (global)
@@ -151,6 +152,7 @@ claude-code-workflow/
 | Staff Engineer review criteria | `~/.claude/prompts/staff-engineer.md` |
 | Design Director review criteria | `~/.claude/prompts/design-director.md` |
 | Slash command behavior | `~/.claude/commands/[command].md` |
+| Sync-to-repo config | `~/.claude/sync-workflow-rules.json` (copy from `sync-rules-template.json`) |
 | Project-specific overrides | `[project]/CLAUDE.md` |
 | Hook scripts | `~/.claude/hooks/` |
 | Hook configuration | `~/.claude/settings.json` |

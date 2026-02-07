@@ -1,0 +1,75 @@
+{
+  "description": "Template for sync-workflow-rules.json. Copy to ~/.claude/sync-workflow-rules.json and customize.",
+  "repo": "YOUR-USERNAME/claude-code-workflow",
+  "repo_local_path": "/tmp/claude-code-workflow-staging/claude-code-workflow",
+
+  "file_mappings": {
+    "~/.claude/CLAUDE.md": "CLAUDE.md",
+    "~/.claude/prompts/staff-engineer.md": "prompts/staff-engineer.md",
+    "~/.claude/prompts/design-director.md": "prompts/design-director.md",
+    "~/.claude/commands/kickoff.md": "commands/kickoff.md",
+    "~/.claude/commands/quickfix.md": "commands/quickfix.md",
+    "~/.claude/commands/scope.md": "commands/scope.md",
+    "~/.claude/commands/new-project.md": "commands/new-project.md",
+    "~/.claude/commands/techdebt.md": "commands/techdebt.md",
+    "~/.claude/commands/reflect.md": "commands/reflect.md",
+    "~/.claude/commands/sync-workflow.md": "commands/sync-workflow.md",
+    "~/.claude/templates/memory-bank/brief.md": "templates/memory-bank/brief.md",
+    "~/.claude/templates/memory-bank/product.md": "templates/memory-bank/product.md",
+    "~/.claude/templates/memory-bank/architecture.md": "templates/memory-bank/architecture.md",
+    "~/.claude/templates/memory-bank/tech.md": "templates/memory-bank/tech.md",
+    "~/.claude/templates/memory-bank/design.md": "templates/memory-bank/design.md",
+    "~/.claude/templates/memory-bank/interaction.md": "templates/memory-bank/interaction.md",
+    "~/.claude/templates/memory-bank/patterns.md": "templates/memory-bank/patterns.md",
+    "~/.claude/templates/memory-bank/context.md": "templates/memory-bank/context.md",
+    "~/.claude/templates/memory-bank/tasks.md": "templates/memory-bank/tasks.md",
+    "~/.claude/hooks/preserve-context.sh": "hooks/preserve-context.sh",
+    "~/.claude/hooks/detect-corrections.sh": "hooks/detect-corrections.sh"
+  },
+
+  "exclude_files": [
+    "~/.claude/settings.json",
+    "~/.claude/claude_desktop_config.json",
+    "~/.claude/compaction-context/",
+    "~/.claude/corrections-log.jsonl",
+    "~/.claude/projects/",
+    "~/.claude/statsig/"
+  ],
+
+  "manually_maintained": [
+    "README.md",
+    "LICENSE",
+    "docs/design-system-guide.md",
+    "docs/how-to-use.md",
+    "docs/setup-guide.md",
+    "docs/slash-commands.md",
+    "hooks/settings.json"
+  ],
+
+  "sanitize_rules": [
+    {
+      "id": "example-personal-name",
+      "description": "Remove or genericize personal references — add your own patterns here",
+      "find": "YOUR_PERSONAL_REFERENCE",
+      "replace": ""
+    },
+    {
+      "id": "example-ticket-prefix",
+      "description": "Replace project-specific ticket prefixes with generic ones",
+      "find": "YOUR-PREFIX",
+      "replace": "PROJ"
+    },
+    {
+      "id": "example-workspace",
+      "description": "Replace workspace/org name with placeholder",
+      "find": "your-org-name",
+      "replace": "your-workspace"
+    }
+  ],
+
+  "obsidian_sync_targets": {
+    "description": "Optional — sync templates to an Obsidian vault. Set to null to skip.",
+    "templates_dir": null,
+    "prompts_and_docs": null
+  }
+}
