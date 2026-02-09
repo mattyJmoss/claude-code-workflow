@@ -9,7 +9,7 @@ An opinionated workflow system that makes Claude Code work like a disciplined en
 - **4 review gates** — Claude reviews its own plans and code using Staff Engineer and Design Director personas before calling anything done
 - **TDD protocol** — Test plans are reviewed for race conditions and edge cases *before* tests are written
 - **Memory bank** — Up to 9 small files per project that let Claude pick up where it left off without re-reading the entire codebase
-- **7 slash commands** — `/new-project`, `/scope`, `/kickoff`, `/quickfix`, `/techdebt`, `/reflect`, `/sync-workflow`
+- **8 slash commands** — `/new-project`, `/setup-design-system`, `/scope`, `/kickoff`, `/quickfix`, `/techdebt`, `/reflect`, `/sync-workflow`
 - **Automated hooks** — Quality gate (test verification), context preservation (survives autocompact), correction detection (organic self-improvement)
 - **Git workflow** — Automatic branching per ticket, PRs created when done
 
@@ -188,6 +188,15 @@ claude-code-workflow/
 | Hook configuration | `~/.claude/settings.json` |
 
 The workflow is self-improving — Claude updates CLAUDE.md when it learns from mistakes. Use `/reflect` periodically to turn accumulated corrections into permanent rules.
+
+## Philosophy
+
+This workflow combines two layers:
+
+1. **Engineering process** — Gates, TDD, git workflow, reviews. The structure that keeps code quality high.
+2. **The taste layer** — Reasoning as infrastructure. Not just "validate on blur" but "validate after focus leaves, not while typing — red text before they're done typing feels like they've made a mistake."
+
+The memory bank's `interaction.md` captures behavioral decisions *with rationale*. This helps AI extrapolate to new situations rather than just pattern-matching rules. Components encode WHAT. The taste layer encodes WHY.
 
 ## Requirements
 
