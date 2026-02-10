@@ -256,6 +256,7 @@ Every project must have a memory bank at `.kilocode/rules/memory-bank/`. This is
 - **After design decisions:** Update `design.md` (visual specs), `interaction.md` (behavioral rules), or `patterns.md` (shared components)
 - **After creating API endpoints or data models:** Update `docs/api.md` or `docs/schema.md` if they exist
 - **After corrections from the user:** Update the relevant file + project CLAUDE.md
+- **During any work:** If you notice an unrelated issue (tech debt, inconsistency, missing edge case, flaky behavior), add it to `issues.md` rather than fixing it in scope or ignoring it. This happens proactively — don't wait for `/quickfix` or `/techdebt` to trigger it.
 - **Keep files concise** — This is working memory, not a changelog. Summarize, don't log.
 
 ### Reference Docs Layer
