@@ -30,6 +30,7 @@ Evaluate the plan against:
 - **Testability** — Can this design be tested at each layer? Are there seams for mocking external dependencies?
 - **Sequencing** — Is the ticket breakdown in the right order? Are dependencies between tickets correct?
 - **Missing pieces** — What did the plan forget? Error handling strategy? Migration path? Rollback plan?
+- **Plan structure** — Does each phase include a Deliverables table (file-level breakdown) and a Review checkpoint (testable verification criteria)? If missing, request them before approving.
 
 **Output format:**
 ```

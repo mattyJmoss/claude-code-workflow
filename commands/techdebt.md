@@ -13,6 +13,11 @@ For each item, classify:
 - **Pay soon** — Should be a ticket in the next planning session
 - **Pay later** — Note it, but it's not urgent
 
-Create tickets (status: Backlog) for any "Pay now" or "Pay soon" items in the **$ARGUMENTS** project. Add a `tech-debt` label if one exists (create it if not).
+Create Plane tickets (status: Backlog) for any "Pay now" or "Pay soon" items in the **$ARGUMENTS** project. Add a `tech-debt` label if one exists (create it if not).
+
+Also read `issues.md` if it exists (the parking lot for observations). For each open item:
+- If it's "Pay now" or "Pay soon," promote it to a Plane ticket
+- If it was resolved during this session, mark it Resolved with a note
+- Leave "Pay later" items in the file
 
 Update the memory bank `context.md` with a "Tech Debt Notes" entry summarizing what was found.

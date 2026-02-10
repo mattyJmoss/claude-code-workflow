@@ -1,20 +1,27 @@
 # Architecture
 
 ## System Overview
-<!-- High-level architecture diagram (describe in text) -->
-<!-- Client → API → Backend → Storage -->
-
-## Layers
-<!-- How is the codebase organized? What are the major modules? -->
-<!-- Define the dependency direction (inner layers don't import outer layers) -->
+<!-- High-level description of the system's components and how they interact -->
+<!-- Include a text diagram if helpful (e.g., Client → API → Database) -->
 
 ## Tech Stack
-<!-- What technologies are used and why -->
 
-## Data Model
-<!-- Key entities and their relationships -->
+| Layer | Technology | Rationale |
+|-------|-----------|-----------|
+| Client | | |
+| Server | | |
+| Storage | | |
+| Auth | | |
+
+## Layer Architecture
+<!-- Describe the layers/modules and their responsibilities -->
+<!-- Document dependency direction: which layers can import which -->
+
+## Key Data Flows
+<!-- Describe the most important data flows through the system -->
+<!-- e.g., "User creates a note" → step by step through the layers -->
 
 ## Architecture Decisions
 
-| Decision | Choice | Rationale | Date |
-|----------|--------|-----------|------|
+| Decision | Choice | Alternatives Considered | Rationale | Date |
+|----------|--------|------------------------|-----------|------|

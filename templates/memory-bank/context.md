@@ -1,20 +1,19 @@
 # Active Context
 
-> This is a LIVING document. Update it after every completed ticket or significant decision.
-
 ## Current Status
-<!-- What phase is the project in? What's deployed? What's in progress? -->
+<!-- One-line summary of where the project stands -->
+<!-- e.g., "Phase: Development — core models complete, building views" -->
 
 ## What's Happening Now
-<!-- What was the last thing worked on? What's the current focus? -->
+<!-- Reverse-chronological entries of recent work. Each entry: -->
+<!-- - Title + date -->
+<!-- - What changed -->
+<!-- - Key files affected -->
+<!-- - Decisions made -->
+<!-- Keep concise — summarize, don't log every line changed -->
 
 ## Recent Decisions
-<!-- Decisions made in the last few sessions that affect current work -->
+<!-- Architecture or product decisions made recently, with rationale -->
 
 ## Open Questions
-<!-- Unresolved questions that need answers before proceeding -->
-
-## Test Blind Spots
-<!-- Patterns from past bugs that TDD missed. Reference these in every test plan. -->
-<!-- Format: "Category: description of what was missed and why" -->
-<!-- Example: "Lifecycle: useEffect cleanup not tested — callback fired after unmount" -->
+<!-- Unresolved items that need input or investigation -->

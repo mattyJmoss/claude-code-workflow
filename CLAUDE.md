@@ -1,4 +1,4 @@
-# Global CLAUDE.md — Claude Code Engineering Defaults
+# Global CLAUDE.md — Matt's Claude Code Defaults
 
 These apply to every project unless overridden by a project-specific CLAUDE.md.
 
@@ -24,6 +24,8 @@ These apply to every project unless overridden by a project-specific CLAUDE.md.
 - **Decimal for money** — Never Float/Double for financial calculations
 - **No hardcoded secrets** — Use environment variables or keychain
 - **Every bug fix is a lesson** — When fixing any bug, pause and ask: "Why didn't TDD catch this?" Log the root cause in `context.md` under `## Test Blind Spots`. This applies whether you're in `/quickfix`, mid-feature, or just responding to an error report.
+- **Watch file size** — If a file exceeds ~400 lines, proactively suggest extracting into smaller modules. This is a soft guideline, not a hard rule — some files are legitimately large.
+- **Stop on confusion** — If a tool call fails or requirements are ambiguous, stop immediately and ask for clarification. Never guess or hallucinate a fix.
 
 ## Security Awareness
 
@@ -48,8 +50,8 @@ These apply to every project unless overridden by a project-specific CLAUDE.md.
 - **`main` is always stable.** Never commit directly to main during implementation work.
 - **Branch per ticket.** Before writing any code for a ticket, create a branch from main.
 - **Branch naming:** `feature/TICKET-ID-short-description` for features, `fix/TICKET-ID-short-description` for fixes.
-  - Examples: `feature/TROVE-12-note-editor`, `fix/BUDG-33-decimal-rounding`
-- **Commit messages** reference the ticket ID: `"Add markdown parsing (TROVE-12)"`
+  - Examples: `feature/PROJ-12-note-editor`, `fix/FIN-33-decimal-rounding`
+- **Commit messages** reference the ticket ID: `"Add markdown parsing (PROJ-12)"`
 - **One branch per ticket.** Don't combine unrelated tickets on the same branch.
 - **PR when done.** After G3/G4 reviews pass, create a PR. If the project has collaborators, leave the PR open for their review. If solo, ask the user whether to merge.
 - **Check before branching.** If already on a feature/fix branch, confirm with the user before switching — they may have uncommitted work.
@@ -62,7 +64,7 @@ For working on multiple tickets simultaneously, use git worktrees. Each worktree
 # Create worktrees for parallel development
 git worktree add ../project-feature-auth feature/PROJ-12-auth
 git worktree add ../project-feature-editor feature/PROJ-13-editor
-git worktree add ../project-fix-balance fix/PROJ-33-rounding
+git worktree add ../project-fix-balance fix/FIN-33-rounding
 
 # Start Claude Code in each (separate terminal tabs/panes)
 cd ../project-feature-auth && claude
@@ -86,7 +88,7 @@ This is the standard engineering workflow. Follow it unless the user explicitly 
 
 1. **Read the memory bank** — `.kilocode/rules/memory-bank/` in order: brief → product → architecture → tech → design → interaction → patterns → context → tasks
 2. **Read project CLAUDE.md** — Check for project-specific overrides and domain-specific guidance files
-3. **Check project tracker** — Fetch tickets for the project. Focus on TODO status (not Backlog) unless told otherwise
+3. **Check Plane tickets** — Fetch via MCP for the project. Focus on TODO status (not Backlog) unless told otherwise
 4. **Identify next work** — Pick the next unblocked ticket in priority order, or follow user direction
 
 ### Planning Phase (Gates G1 + G2)
@@ -101,16 +103,24 @@ When planning new work (features, refactors, multi-ticket efforts):
 5. Incorporate feedback, update the plan
 
 **G2 — Design Director Reviews UI Tickets**
-After breaking the approved plan into tickets:
+After breaking the approved plan into Plane tickets:
 1. Identify which tickets involve UI/UX work
 2. Spawn a **Design Director** subagent (read `~/.claude/prompts/design-director.md` first; use project-specific prompt if one exists)
 3. Pass: UI ticket acceptance criteria + project design system docs
 4. Reviewer evaluates: design system compliance, platform conventions, interaction patterns, accessibility
 5. Update ticket AC with design feedback
 
+**Plan Structure**
+When drafting implementation plans, structure each phase with:
+- A clear **Goal** statement
+- A **Deliverables table** listing each file to create/modify: `| File | Action (New/Modify) | Purpose |`
+- A **Review checkpoint** — verification checklist for the phase (specific testable criteria, build/type check passes, tests pass)
+
+Save the full plan to `docs/specs/` if the project has a reference docs layer.
+
 **Ticket Creation**
 After plans pass G1 and G2:
-1. Create tickets in your project tracker
+1. Create tickets in Plane via MCP in the relevant project
 2. Include acceptance criteria refined by reviewer feedback
 3. Set appropriate status, priority, and dependencies
 4. Update memory bank `tasks.md` to mirror the ticket list
@@ -143,7 +153,7 @@ For each ticket, before writing implementation code:
 For each ticket:
 1. **Sync with main** — Pull the latest from `main` before starting work. If on main: `git pull`. If creating a new branch: create it from the freshly pulled main. If on an existing feature branch: `git fetch origin && git merge origin/main` (or rebase if the project prefers). This prevents working on stale code and reduces merge conflicts.
 2. **Create a branch** — Check current branch. If on main, create and switch to a new branch per the Git Workflow convention. If already on a feature/fix branch from a previous ticket, confirm with the user before switching.
-3. Move ticket to "In Progress"
+3. Move ticket to "In Progress" in Plane
 3. Follow TDD Protocol above
 4. Implement strictly within ticket scope
 5. Commit with ticket ID in message (e.g., `"Add markdown parsing (PROJ-12)"`)
@@ -169,9 +179,9 @@ After implementation:
 ### Completion
 
 1. **Push and create PR** — Push the branch to remote. Create a PR with a summary of what was done and the ticket ID. If the project has collaborators, leave the PR open for review. If solo, ask the user whether to merge.
-2. Comment on the ticket describing what was done (include the PR link)
+2. Comment on the Plane ticket describing what was done (include the PR link)
 3. Update ticket status to Done (or relevant status)
-4. **Quick tech debt check** — Review the changes just made and flag any debt introduced: shortcuts, TODOs, hardcoded values, missing edge case coverage, or patterns that will need revisiting. Note these in the PR description and in `context.md`. If anything is "Pay now" or "Pay soon" severity, create a Backlog ticket with a `tech-debt` label.
+4. **Quick tech debt check** — Review the changes just made and flag any debt introduced: shortcuts, TODOs, hardcoded values, missing edge case coverage, or patterns that will need revisiting. Note these in the PR description and in `context.md`. If anything is "Pay now" or "Pay soon" severity, create a Backlog ticket in Plane with the `tech-debt` label.
 5. **Bug retrospective (when fixing bugs)** — If the ticket was a bug fix, ask: "Why didn't our TDD protocol catch this?" Categorize the root cause (e.g., missing concurrency test, untested lifecycle scenario, boundary condition, data persistence edge case) and add it to the `## Test Blind Spots` section in `context.md`. This trains future test plans to cover patterns we've missed before.
 5. Update memory bank:
    - `context.md` — What changed, decisions made, current status, tech debt notes
@@ -227,7 +237,8 @@ Every project must have a memory bank at `.kilocode/rules/memory-bank/`. This is
 ├── interaction.md    # OPTIONAL: behavioral principles (when/how things behave)
 ├── patterns.md       # OPTIONAL: reusable UI component catalog
 ├── context.md        # LIVING: current status, recent work, open questions
-└── tasks.md          # LIVING: ticket backlog, mirrors project tracker
+├── tasks.md          # LIVING: ticket backlog, mirrors Plane
+└── issues.md         # OPTIONAL/LIVING: parking lot for observations, bugs, tech debt not yet worth a ticket
 ```
 
 ### New Project Setup
@@ -243,8 +254,18 @@ Every project must have a memory bank at `.kilocode/rules/memory-bank/`. This is
 - **After every completed ticket:** Update `context.md` and `tasks.md`
 - **After architecture/tech decisions:** Update `architecture.md` or `tech.md`
 - **After design decisions:** Update `design.md` (visual specs), `interaction.md` (behavioral rules), or `patterns.md` (shared components)
+- **After creating API endpoints or data models:** Update `docs/api.md` or `docs/schema.md` if they exist
 - **After corrections from the user:** Update the relevant file + project CLAUDE.md
 - **Keep files concise** — This is working memory, not a changelog. Summarize, don't log.
+
+### Reference Docs Layer
+
+Optionally, projects can maintain a `docs/` directory at the project root for heavyweight reference material (API specs, data schemas, protocol docs, development procedures). Memory bank files should reference `docs/` instead of duplicating large reference sections inline. Copy templates from `~/.claude/templates/docs/` to get started.
+
+| Layer | Purpose | Update Frequency |
+|-------|---------|-----------------|
+| **Memory bank** | Working memory — status, decisions, tasks | Every session |
+| **Reference docs** (`docs/`) | Permanent reference — API specs, schemas, dev procedures | When APIs or schemas change |
 
 ---
 

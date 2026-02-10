@@ -1,6 +1,6 @@
-Read the memory bank at `.kilocode/rules/memory-bank/` in order: brief → product → architecture → tech → design → interaction → patterns → context → tasks. Then read the project CLAUDE.md for any project-specific overrides or domain-specific guidance files.
+Read the memory bank at `.kilocode/rules/memory-bank/` in order: brief → product → architecture → tech → design → context → tasks. Also scan `issues.md` if it exists — note any open items relevant to today's work. Then read the project CLAUDE.md for any project-specific overrides or domain-specific guidance files.
 
-Fetch tickets for the **$ARGUMENTS** project. Focus on tickets in TODO status (not Backlog) unless I say otherwise. Note which tickets have been completed since the last session by comparing tasks.md to the tracker.
+Fetch Plane tickets via MCP for the **$ARGUMENTS** project. Focus on tickets in TODO status (not Backlog) unless I say otherwise. Note which tickets have been completed since the last session by comparing tasks.md to Plane.
 
 Show me:
 1. A brief summary of where we left off (from context.md)

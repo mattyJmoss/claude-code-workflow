@@ -1,22 +1,35 @@
-# Technical Reference
+# Tech Context
 
-## Dev Environment
-<!-- How to set up the project locally -->
-<!-- Required tools, versions, env vars -->
+## Languages & Frameworks
+<!-- List primary languages, frameworks, and their versions -->
 
-## Build & Run
-<!-- Commands to build, run, test -->
-<!-- Example:
-- Build: `swift build` / `npm run build`
-- Test: `swift test` / `npm test`
-- Dev server: `npm run dev`
--->
+## Key Libraries
 
-## Libraries & Services
-<!-- Key dependencies and why they were chosen -->
+| Library | Purpose | Version |
+|---------|---------|---------|
+| | | |
 
-## Constraints
-<!-- Known limitations, platform requirements, performance targets -->
+## Services & Infrastructure
+<!-- External services, APIs, cloud resources -->
 
-## Dev Conventions
-<!-- Code style, naming conventions, file organization patterns -->
+## Development Environment
+
+### Setup
+<!-- Steps to get a new developer (or Claude session) running -->
+
+### Build & Test
+```bash
+# Build command
+# Test command
+# Lint command (if applicable)
+```
+
+### Environment Variables
+<!-- List required env vars (DO NOT include actual values/secrets) -->
+
+| Variable | Purpose | Where Stored |
+|----------|---------|-------------|
+| | | |
+
+## Constraints & Gotchas
+<!-- Things that have bitten us or would bite a new developer -->

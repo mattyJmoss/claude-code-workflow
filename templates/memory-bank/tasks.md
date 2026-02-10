@@ -1,15 +1,22 @@
 # Tasks
 
-> Mirrors the project tracker (Plane, Linear, Jira, etc.). Update after every ticket completion.
+## Plane Project
+<!-- Project name and ticket prefix as they appear in Plane -->
+<!-- e.g., "Project: Trove | Prefix: PROJ-" -->
 
-## In Progress
-<!-- Tickets currently being worked on -->
+## Active Tickets
 
-## Up Next
-<!-- Tickets ready to start (unblocked, prioritized) -->
+| Ticket | Title | Status | Depends On |
+|--------|-------|--------|-----------|
+| | | TODO | |
+
+## Completed Tickets
+<!-- Move tickets here as they're completed -->
+<!-- Include a one-line summary of what was done -->
+
+| Ticket | Title | Summary |
+|--------|-------|---------|
+| | | |
 
 ## Backlog
-<!-- All other tickets, in rough priority order -->
-
-## Completed
-<!-- Recently completed tickets (keep last ~10 for context, then summarize) -->
+<!-- Future work not yet in TODO. Low detail is fine. -->
