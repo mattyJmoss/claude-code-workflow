@@ -1,5 +1,16 @@
 # Interaction Principles
 
+> **The Taste Layer:** This file isn't just patterns — it's reasoning. Every behavioral decision
+> should include WHY. Not "validate on blur" but "validate after focus leaves, not while typing —
+> red text before they're done typing feels like they've made a mistake."
+>
+> The rationale makes principles stick. It helps AI understand intent, not just rules. When a new
+> situation arises, AI can extrapolate from the reasoning, not just pattern-match.
+>
+> **This is a living document.** Update it as you build. When you make an interaction decision
+> during development — how a form validates, when feedback appears, how navigation flows —
+> capture it here with the reasoning. The file grows with the product.
+>
 > **When to create this file:** When your project has UI that responds to user actions — forms, navigation, overlays, feedback. This complements `design.md` (which covers *what things look like*) by defining *when and how things behave*.
 >
 > **How to fill it out:** Start with the sections most relevant to your app. You don't need all sections immediately — fill them in as you build features that need behavioral rules. The goal is to have a single source of truth so every screen behaves consistently.

@@ -194,6 +194,23 @@ After implementation:
 
 ---
 
+## The Taste Layer
+
+Components give you WHAT. The memory bank encodes WHY.
+
+When filling out `interaction.md`, every decision needs:
+- **The behavior** — what happens
+- **The rationale** — why it should happen this way
+
+**Bad:** "Validate on blur"
+**Good:** "Validate after focus leaves, not while typing. Red text before they're done typing feels like they've made a mistake."
+
+The rationale helps you extrapolate to new situations — not just pattern-match rules. When a new interaction question comes up, check if existing rationale applies before inventing something new.
+
+`interaction.md` is a living document. Update it as you build. When you make an interaction decision during development, capture it there with the reasoning.
+
+---
+
 ## Memory Bank Protocol
 
 Every project must have a memory bank at `.kilocode/rules/memory-bank/`. This is Claude's working memory — cheaper and faster than re-reading the full codebase every session.
