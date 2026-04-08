@@ -26,7 +26,16 @@ If you already know what to build, just build it.
 
 ## Phase 0 — Frame (Interactive)
 
-Before any agents spin up, have a conversation with Matt to frame the decision.
+Before any agents spin up, create a branch and frame the decision.
+
+### Create a branch:
+Before anything else, check if you're on `main`. If so, create and switch to
+a new branch based on the topic:
+```
+git checkout -b collab/<short-slug>
+```
+Use a short kebab-case slug derived from the question (e.g., `collab/playback-queue-pattern`,
+`collab/offline-sync-strategy`). If already on a non-main branch, stay on it.
 
 ### What to establish:
 1. **The actual question** — not a vague topic, but the specific decision
