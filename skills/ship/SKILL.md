@@ -38,7 +38,13 @@ and wait for approval before proceeding.
 
 If changes are already committed (nothing in `git status`), skip to Step 3.
 
-### Step 3: Commit and Push
+### Step 3: Run Full Test Suite
+Run `npm test` to execute the full test suite (not just the pipeline subset).
+If any tests fail, stop and report the failures — do NOT push.
+
+For server changes, also run `cd server && npm test` if a test script exists.
+
+### Step 4: Commit and Push
 - Stage relevant files
 - Create commit with conventional commit message
 - Include `Reviewed-by:` trailer if review ran
@@ -47,7 +53,7 @@ If changes are already committed (nothing in `git status`), skip to Step 3.
 Pushing to `main` automatically triggers the EAS preview workflow.
 Pushing to a `release-v*` branch triggers the production workflow.
 
-### Step 4: Deploy Server (if needed)
+### Step 5: Deploy Server (if needed)
 **Only if server/ files changed:**
 ```
 cd server && npx wrangler deploy
@@ -57,7 +63,7 @@ Confirm deployment succeeded. Report the version ID.
 Server deployment is NOT in CI because it uses Cloudflare Workers
 (separate infra from Expo). This is the only manual deploy step.
 
-### Step 5: Drift Check — Propose Rule Updates
+### Step 6: Drift Check — Propose Rule Updates
 After pushing, analyze the committed changes for drift signals:
 
 **Check for these patterns:**
@@ -84,7 +90,7 @@ After pushing, analyze the committed changes for drift signals:
 Only propose changes that are meaningful and lasting — not one-off implementation
 details. If nothing needs updating, report "No rule drift detected."
 
-### Step 6: Report
+### Step 7: Report
 ```
 ## Ship Report
 
