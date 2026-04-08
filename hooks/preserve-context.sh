@@ -1,6 +1,8 @@
 #!/bin/bash
-# preserve-context.sh — Saves critical project context before autocompact
-# Fired by PreCompact hook so context survives compaction
+# preserve-context.sh — Saves critical project context before compaction
+# Note: CLAUDE.md now survives compaction natively. This hook captures
+# ephemeral context that CLAUDE.md doesn't cover: git state, GSD phase,
+# and active work summary.
 
 set -euo pipefail
 
@@ -8,7 +10,6 @@ INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // "unknown"' 2>/dev/null)
 CWD=$(echo "$INPUT" | jq -r '.cwd // "."' 2>/dev/null)
 
-# Determine context save location
 CONTEXT_DIR="$HOME/.claude/compaction-context"
 mkdir -p "$CONTEXT_DIR"
 SNAPSHOT_FILE="$CONTEXT_DIR/snapshot.md"
@@ -33,7 +34,6 @@ SNAPSHOT_FILE="$CONTEXT_DIR/snapshot.md"
     echo '```'
     echo ""
 
-    # Uncommitted changes summary
     CHANGES=$(git -C "$CWD" status --short 2>/dev/null || echo "")
     if [ -n "$CHANGES" ]; then
       echo "### Uncommitted Changes"
@@ -44,22 +44,24 @@ SNAPSHOT_FILE="$CONTEXT_DIR/snapshot.md"
     fi
   fi
 
-  # Memory bank context (if exists)
-  CONTEXT_MD="$CWD/.kilocode/rules/memory-bank/context.md"
-  if [ -f "$CONTEXT_MD" ]; then
-    echo "## Current Context (from memory bank)"
+  # GSD state (if active)
+  if [ -f "$CWD/.planning/STATE.md" ]; then
+    echo "## GSD State"
     echo ""
-    cat "$CONTEXT_MD"
+    head -30 "$CWD/.planning/STATE.md"
+    echo ""
+    echo "(truncated — read full STATE.md if needed)"
     echo ""
   fi
 
-  # Tasks (if exists)
-  TASKS_MD="$CWD/.kilocode/rules/memory-bank/tasks.md"
-  if [ -f "$TASKS_MD" ]; then
-    echo "## Current Tasks (from memory bank)"
-    echo ""
-    cat "$TASKS_MD"
-    echo ""
+  # GSD current phase progress
+  if [ -d "$CWD/.planning" ]; then
+    LATEST_PHASE=$(ls "$CWD"/.planning/*-PLAN.md 2>/dev/null | sort -V | tail -1)
+    if [ -n "${LATEST_PHASE:-}" ]; then
+      echo "## Latest Plan"
+      echo "**File:** $(basename "$LATEST_PHASE")"
+      echo ""
+    fi
   fi
 
 } > "$SNAPSHOT_FILE"

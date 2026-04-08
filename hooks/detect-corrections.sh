@@ -1,6 +1,6 @@
 #!/bin/bash
 # detect-corrections.sh — Detects user correction patterns for self-improvement
-# Fired by UserPromptSubmit hook. Logs corrections for /reflect review.
+# Fired by UserPromptSubmit hook. Logs corrections for review.
 # Does NOT block the prompt — observation only.
 
 set -euo pipefail
@@ -8,13 +8,10 @@ set -euo pipefail
 INPUT=$(cat)
 PROMPT=$(echo "$INPUT" | jq -r '.prompt // ""' 2>/dev/null)
 
-# Exit early if prompt is empty or very short
 if [ ${#PROMPT} -lt 5 ]; then
   exit 0
 fi
 
-# Correction patterns (case-insensitive grep)
-# These indicate the user is correcting Claude's behavior
 PATTERNS=(
   "^no[,. ]"
   "^actually[,. ]"
@@ -59,19 +56,15 @@ for pattern in "${PATTERNS[@]}"; do
 done
 
 if [ "$CORRECTION_DETECTED" = true ]; then
-  # Log the correction
   TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
   LOG_FILE="$HOME/.claude/corrections-log.jsonl"
   CWD=$(echo "$INPUT" | jq -r '.cwd // "unknown"' 2>/dev/null)
   PROJECT=$(basename "$CWD")
-
-  # Truncate prompt to 500 chars for logging
   TRUNCATED_PROMPT=$(echo "$PROMPT" | head -c 500)
 
   echo "{\"timestamp\": \"$TIMESTAMP\", \"project\": \"$PROJECT\", \"pattern\": \"$MATCHED_PATTERN\", \"prompt\": $(echo "$TRUNCATED_PROMPT" | jq -Rs .)}" >> "$LOG_FILE"
 
-  # Output context that Claude will see — gentle reminder
-  echo "Self-improvement note: A correction pattern was detected in this prompt. After addressing the user's request, consider whether this represents a recurring pattern that should be captured in CLAUDE.md or the project's memory bank. Use /reflect periodically to review accumulated corrections."
+  echo "Self-improvement note: A correction pattern was detected. After addressing the user's request, consider whether this represents a recurring pattern that should be captured in CLAUDE.md or .claude/rules/. Use /reflect to review what's been captured."
 fi
 
 exit 0

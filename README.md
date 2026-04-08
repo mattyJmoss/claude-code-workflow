@@ -1,17 +1,17 @@
 # Claude Code Engineering Workflow
 
-A structured engineering workflow for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that adds review gates, TDD protocol, persistent memory, and self-improvement to your AI-assisted development.
+A lightweight engineering workflow for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) built around collaborative decision-making, review personas, persistent memory, and self-improving hooks.
 
 ## What This Is
 
-An opinionated workflow system that makes Claude Code work like a disciplined engineering team:
+An opinionated workflow system that replaces heavyweight planning pipelines with focused, token-efficient tools:
 
-- **4 review gates** — Claude reviews its own plans and code using Staff Engineer and Design Director personas before calling anything done
-- **TDD protocol** — Test plans are reviewed for race conditions and edge cases *before* tests are written
-- **Memory bank** — Up to 9 small files per project that let Claude pick up where it left off without re-reading the entire codebase
-- **8 slash commands** — `/new-project`, `/setup-design-system`, `/scope`, `/kickoff`, `/quickfix`, `/techdebt`, `/reflect`, `/sync-workflow`
+- **`/collab`** — Two-agent debate for architectural decisions. Product Architect and Staff Engineer argue approaches, you arbitrate. Decisions saved to Open Brain + DECISIONS.md.
+- **`/review`** — Single-pass code review before committing. One focused agent, not three parallel reviewers.
+- **`/ship`** — Commit, push, deploy. Drift-checks rules after pushing.
+- **Review personas** — Staff Engineer, Product Thinker, Design Thinker available for ad-hoc reviews
 - **Automated hooks** — Quality gate (test verification), context preservation (survives autocompact), correction detection (organic self-improvement)
-- **Git workflow** — Automatic branching per ticket, PRs created when done
+- **Memory bank** — Up to 9 small files per project that let Claude pick up where it left off
 
 ## Quick Start
 
@@ -21,24 +21,21 @@ An opinionated workflow system that makes Claude Code work like a disciplined en
 git clone https://github.com/mattyJmoss/claude-code-workflow.git
 ```
 
-### 2. Run the install prompt
+### 2. Install skills and hooks
 
 Open Claude Code and paste:
 
 ```
 I want to install an engineering workflow from a folder. The source is at [PATH]/claude-code-workflow/. Here's what to do:
 
-1. Create directories: ~/.claude/prompts/, ~/.claude/commands/, ~/.claude/templates/memory-bank/, ~/.claude/hooks/
+1. Create directories: ~/.claude/skills/, ~/.claude/hooks/, ~/.claude/templates/memory-bank/
 
 2. Copy files:
-   - CLAUDE.md → ~/.claude/CLAUDE.md
-   - prompts/staff-engineer.md → ~/.claude/prompts/staff-engineer.md
-   - prompts/design-director.md → ~/.claude/prompts/design-director.md
-   - commands/*.md → ~/.claude/commands/ (all 7 files)
-   - templates/memory-bank/*.md → ~/.claude/templates/memory-bank/ (all 9 files)
+   - skills/*/ → ~/.claude/skills/ (all skill directories with SKILL.md files)
    - hooks/preserve-context.sh → ~/.claude/hooks/preserve-context.sh
    - hooks/detect-corrections.sh → ~/.claude/hooks/detect-corrections.sh
    - hooks/settings.json → merge into ~/.claude/settings.json (hooks section only)
+   - templates/memory-bank/*.md → ~/.claude/templates/memory-bank/ (all 9 files)
 
 3. Make hook scripts executable:
    chmod +x ~/.claude/hooks/preserve-context.sh ~/.claude/hooks/detect-corrections.sh
@@ -46,77 +43,60 @@ I want to install an engineering workflow from a folder. The source is at [PATH]
 4. Confirm everything looks correct and show me what was installed.
 ```
 
-### 3. Set up `/sync-workflow` (optional)
-
-If you want to be able to publish workflow changes back to a shared repo, paste this into Claude Code:
-
-```
-I want to set up /sync-workflow so I can publish changes to my workflow files. Here's what to do:
-
-1. Read the template config at [PATH]/claude-code-workflow/sync-rules-template.json
-
-2. Scan my ~/.claude/ directory (not the projects/ subdirectory) and identify:
-   - Any personal names, usernames, or collaborator names in CLAUDE.md or command files
-   - Any project-specific ticket prefixes (like PROJ-123 patterns) used as examples
-   - Any workspace or organization names
-   - Any files that contain secrets, API keys, or bearer tokens
-   - Any hook scripts that reference personal services or bots
-
-3. Ask me:
-   - What GitHub repo should changes be published to? (e.g., myuser/claude-code-workflow)
-   - Where is my local clone of that repo? (or should we clone it now?)
-   - Do I use Obsidian? If so, where's my vault path for syncing templates?
-
-4. Generate a ~/.claude/sync-workflow-rules.json config that:
-   - Maps every file from step 2's scan to the correct repo destination
-   - Adds sanitize_rules for every personal/project-specific reference found
-   - Excludes any files with secrets
-   - Sets the Obsidian paths (or null if not using Obsidian)
-
-5. Show me the generated config and explain what each sanitization rule does before saving.
-```
-
-### 4. Start using it
+### 3. Start using it
 
 ```bash
-# New project
-/new-project MyApp
+# Decision with multiple defensible paths
+/collab Should we use a queue or event emitter for playback?
 
-# Planning session
-/scope MyApp
+# Code review before committing
+/review
 
-# Daily work session
-/kickoff MyApp
-
-# Quick bug fix
-/quickfix MyApp
+# Ship it
+/ship
 ```
 
 ## How It Works
 
-### The 4-Gate Model
+### The `/collab` Workflow
 
 ```
-PLANNING                          IMPLEMENTATION
+Phase 0: Frame          Phase 1: Debate           Phase 2: Synthesize
+─────────────           ───────────────           ──────────────────
 
-G1: Staff Engineer ──► Plan       G3: Staff Engineer ──► Code
-    (architecture,                    (correctness, security,
-     concurrency,                      performance, testing)
-     testability)
-                                  G4: Design Director ──► UI Code
-G2: Design Director ──► UI           (design system, platform,
-    Tickets                            motion, accessibility)
+You describe the     →  Product Architect     →  Opus reads transcript
+decision + constraints   and Staff Engineer       and produces:
+                         debate for 2 rounds      - Recommendation
+Claude asks              (300 words each,         - Key agreements
+clarifying questions     AGREE/DISAGREE tokens)   - Open disagreements
+                                                  - Decision needed
+Produces a              Autonomous — no          
+decision brief          human in the loop        You confirm → saved to
+                                                 Open Brain + DECISIONS.md
 ```
 
-### The Lifecycle
+### When to Use What
 
-```
-/new-project  →  /scope  →  /kickoff  →  /kickoff  →  /techdebt
-    (once)      (per feature)  (daily driver)        (close out)
-                                    ↘
-                                /quickfix          /reflect
-                              (for one-off fixes)  (periodically)
-```
+| Situation | Tool |
+|-----------|------|
+| "Should we use X or Y?" | `/collab` |
+| "What's the best approach for..." | `/collab` |
+| "Fix the crash in..." | Just do it |
+| "Add a button that..." | Just do it |
+| Review code before committing | `/review` |
+| Commit, push, deploy | `/ship` |
+
+**Rule of thumb:** Use `/collab` when there's more than one defensible implementation path. Otherwise, just execute.
+
+### Review Personas
+
+Three review personas available for ad-hoc use:
+
+- **`/product-thinker`** — Scope discipline, user impact, problem validity
+- **`/staff-engineer`** — Architecture coherence, state management, failure modes
+- **`/design-thinker`** — Platform compliance, interaction quality, accessibility
+
+These are also used internally by `/collab` (merged into Product Architect and Staff Engineer debate personas).
 
 ### Memory Bank
 
@@ -139,70 +119,56 @@ Instead of re-reading your entire codebase every session, Claude reads up to 9 s
 
 ```
 claude-code-workflow/
-├── CLAUDE.md                       # The master workflow file
-├── sync-rules-template.json        # Template for /sync-workflow config
-├── prompts/
-│   ├── staff-engineer.md           # 3-mode review persona (plan, test plan, code)
-│   └── design-director.md          # Design review persona (global)
-├── commands/
-│   ├── kickoff.md                  # Daily work session
-│   ├── quickfix.md                 # Quick bug fix
-│   ├── scope.md                    # Planning session
-│   ├── new-project.md              # Project bootstrapping
-│   ├── techdebt.md                 # Debt review
-│   ├── reflect.md                  # Self-improvement
-│   └── sync-workflow.md            # Publish workflow changes to public repo
-├── templates/
-│   └── memory-bank/                # Blank templates for new projects
-│       ├── brief.md, product.md, architecture.md, tech.md
-│       ├── design.md, interaction.md, patterns.md
-│       └── context.md, tasks.md
+├── README.md
+├── LICENSE
+├── skills/
+│   ├── collab/SKILL.md                    # Two-agent decision debate
+│   ├── collab-product-architect/SKILL.md  # Debate persona (product + design)
+│   ├── collab-staff-engineer/SKILL.md     # Debate persona (systems)
+│   ├── review/SKILL.md                    # Single-pass code review
+│   ├── ship/SKILL.md                      # Commit, push, deploy
+│   ├── product-thinker/SKILL.md           # Review persona (product)
+│   ├── staff-engineer/SKILL.md            # Review persona (engineering)
+│   ├── design-thinker/SKILL.md            # Review persona (design)
+│   └── reflect/SKILL.md                   # Self-improvement from corrections
 ├── hooks/
-│   ├── preserve-context.sh         # PreCompact context snapshot
-│   ├── detect-corrections.sh       # Correction pattern detection
-│   └── settings.json               # Hook configuration
+│   ├── preserve-context.sh                # PreCompact context snapshot
+│   ├── detect-corrections.sh              # Correction pattern detection
+│   └── settings.json                      # Hook configuration
+├── templates/
+│   └── memory-bank/                       # Blank templates for new projects
+├── commands/                              # Legacy commands (kept for reference)
+├── prompts/                               # Legacy prompts (superseded by skills/)
 └── docs/
-    ├── how-to-use.md               # Detailed usage guide
-    ├── slash-commands.md            # When to use each command
-    └── design-system-guide.md      # How to fill out design system files
+    ├── how-to-use.md
+    ├── slash-commands.md
+    └── design-system-guide.md
 ```
 
-## Documentation
+## Token Efficiency
 
-- **[How to Use](docs/how-to-use.md)** — Full workflow walkthrough
-- **[Slash Commands](docs/slash-commands.md)** — When to use each command
-- **[Design System Guide](docs/design-system-guide.md)** — How to fill out design.md, interaction.md, and patterns.md
-- **[Setup Guide](docs/setup-guide.md)** — Quick 2-minute install
+This workflow was designed to replace heavyweight planning pipelines (like GSD) that burn 25-40+ LLM calls per decision:
 
-## Customizing
-
-| What | Where |
-|------|-------|
-| Global workflow rules | `~/.claude/CLAUDE.md` |
-| Staff Engineer review criteria | `~/.claude/prompts/staff-engineer.md` |
-| Design Director review criteria | `~/.claude/prompts/design-director.md` |
-| Slash command behavior | `~/.claude/commands/[command].md` |
-| Sync-to-repo config | `~/.claude/sync-workflow-rules.json` (copy from `sync-rules-template.json`) |
-| Project-specific overrides | `[project]/CLAUDE.md` |
-| Hook scripts | `~/.claude/hooks/` |
-| Hook configuration | `~/.claude/settings.json` |
-
-The workflow is self-improving — Claude updates CLAUDE.md when it learns from mistakes. Use `/reflect` periodically to turn accumulated corrections into permanent rules.
+| Component | Old (4-gate/GSD) | New (/collab) |
+|-----------|------------------|---------------|
+| Planning | 4+ researcher agents, planner, checker | 2-agent debate (2 rounds) |
+| Review gates | 3 parallel reviewers | 1 focused reviewer |
+| State management | STATE.md, phases, milestones | DECISIONS.md + Open Brain |
+| Total LLM calls per decision | ~25-40 | ~9-13 |
 
 ## Philosophy
 
-This workflow combines two layers:
+Two layers working together:
 
-1. **Engineering process** — Gates, TDD, git workflow, reviews. The structure that keeps code quality high.
-2. **The taste layer** — Reasoning as infrastructure. Not just "validate on blur" but "validate after focus leaves, not while typing — red text before they're done typing feels like they've made a mistake."
-
-The memory bank's `interaction.md` captures behavioral decisions *with rationale*. This helps AI extrapolate to new situations rather than just pattern-matching rules. Components encode WHAT. The taste layer encodes WHY.
+1. **Decision quality** — `/collab` ensures multiple perspectives before committing to an approach. Not a rubber stamp — genuine debate between a product lens and an engineering lens.
+2. **The taste layer** — Review personas don't just check correctness. They check whether things *feel right*. Platform conventions, interaction quality, progressive disclosure. Components encode WHAT. The taste layer encodes WHY.
 
 ## Requirements
 
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code) installed
 - `jq` (for hook scripts) — `brew install jq` on macOS
 - Git (for branching workflow)
+- Open Brain MCP server (optional, for cross-session decision memory)
 
 ## License
 
